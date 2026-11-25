@@ -42,8 +42,14 @@ def candidates_doc() -> dict:
 def test_agent_tasks_only_permitted_fields(tasks_doc: dict) -> None:
     tasks = iter_agent_tasks(tasks_doc)
     assert {t["task_id"] for t in tasks} == {
+        # pilot-v1.0 tasks
         "pi_lazy_extension_loading",
         "pi_package_filtering",
+        # main-v1.0 tasks (config/main_experiment.yaml)
+        "pi_package_dedup_collisions",
+        "pi_rpc_context_statistics",
+        "pi_session_directory_config",
+        "pi_cli_mode_validation",
     }
     for task in tasks:
         assert set(task.keys()) == AGENT_VISIBLE_TASK_FIELDS

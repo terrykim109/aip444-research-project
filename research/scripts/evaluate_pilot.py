@@ -124,6 +124,13 @@ def main() -> int:
     parser.add_argument(
         "--annotation-set", choices=[*GT_SETS, "both"], default="both"
     )
+    parser.add_argument(
+        "--task-id",
+        action="append",
+        dest="task_ids",
+        help="Evaluate only these tasks (repeatable). Prevents mixing pilot "
+        "and main-experiment traces in one report.",
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -131,7 +138,16 @@ def main() -> int:
     if not trace_files:
         print(f"ERROR: no traces found in {args.traces_dir}", file=sys.stderr)
         return 1
-    traces = [json.loads(p.read_text(encoding="utf-8")) for p in trace_files]
+    loaded = [
+        (p, json.loads(p.read_text(encoding="utf-8"))) for p in trace_files
+    ]
+    if args.task_ids:
+        loaded = [(p, t) for p, t in loaded if t["task_id"] in args.task_ids]
+        if not loaded:
+            print("ERROR: no traces match the requested task ids", file=sys.stderr)
+            return 1
+    trace_files = [p for p, _ in loaded]
+    traces = [t for _, t in loaded]
 
     sets = list(GT_SETS) if args.annotation_set == "both" else [args.annotation_set]
     report: dict = {

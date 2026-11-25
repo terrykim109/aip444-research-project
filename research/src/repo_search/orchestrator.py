@@ -110,6 +110,7 @@ def run_trial(
     chat_client: OpenRouterChatClient | None = None,
     embedder: OpenRouterEmbedder | None = None,
     dry_run_chat: Any | None = None,
+    protocol_version: str = "pilot-v1.0",
 ) -> dict[str, Any]:
     """
     Execute one method once for a task. Does not loop the 12 pilot records.
@@ -192,7 +193,7 @@ def run_trial(
         record = {
             "record_type": "experiment_trial",
             "stage": "6",
-            "protocol_version": "pilot-v1.0",
+            "protocol_version": protocol_version,
             "task_id": task_id,
             "paired_trial_id": paired_trial_id,
             "method": method,

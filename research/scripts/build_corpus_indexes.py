@@ -41,6 +41,13 @@ def main() -> int:
         default=None,
         help="Artifacts root (default: research/artifacts).",
     )
+    parser.add_argument(
+        "--task-id",
+        action="append",
+        dest="task_ids",
+        help="Build these verified tasks instead of the pilots (repeatable). "
+        "Requires worktree_path set in the manifest (prepare_worktrees --write-paths).",
+    )
     args = parser.parse_args()
     _load_dotenv(ROOT / ".env")
 
@@ -64,6 +71,7 @@ def main() -> int:
             embedder=embedder,
             artifacts_root=artifacts,
             dry_run_chunks_only=True,
+            task_ids=args.task_ids,
         )
         embedder.close()
     else:
@@ -86,6 +94,7 @@ def main() -> int:
                 embedder=emb,
                 artifacts_root=artifacts,
                 dry_run_chunks_only=False,
+                task_ids=args.task_ids,
             )
 
     print(json.dumps([s.to_dict() for s in stats], indent=2))

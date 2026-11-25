@@ -4,8 +4,8 @@
     "Agent-visible task records contain ONLY task_id, task_prompt, context_budget, and agent_call_limit.",
     "Do not place target/parent SHAs, commit messages, diffs, changed-file lists, or ground truth in this file's agent-facing fields.",
     "Budgets mirror frozen pilot-v1.0 config/experiment.yaml (predetermined, not optimized).",
-
-    "Task validation status is recorded in candidates.json and docs/benchmark_validation.md."
+    "Task validation status is recorded in candidates.json and docs/benchmark_validation.md.",
+    "main-v1.0: four main-experiment tasks (D, F, G, H) added verbatim from task_sets/t2_context_v1.json (T2 delivery); selection rationale in config/main_experiment.yaml."
   ],
   "tasks": [
     {
@@ -17,6 +17,30 @@
     {
       "task_id": "pi_package_filtering",
       "task_prompt": "Introduce a dedicated package configuration for external npm and Git sources while preserving existing configuration behavior. Support selective loading of package-provided resources and maintain consistent package-management behavior.",
+      "context_budget": 6000,
+      "agent_call_limit": 5
+    },
+    {
+      "task_id": "pi_package_dedup_collisions",
+      "task_prompt": "The same package may be configured globally and in a project. Resolve each package identity once, with the project configuration taking precedence, while preserving resource filtering. Report collisions among named skills, prompts and themes with the retained and discarded resource paths. Startup and reload resource listings should make package origin and scope understandable. Preserve local resource discovery, including configured extension directories. Find the pre-existing repository context needed for this behaviour; return ranked code evidence and do not implement a patch.",
+      "context_budget": 6000,
+      "agent_call_limit": 5
+    },
+    {
+      "task_id": "pi_rpc_context_statistics",
+      "task_prompt": "An RPC client requesting session statistics needs current context usage alongside cumulative token and cost totals. Include the available context token count, model context window and percentage. Immediately after compaction, do not present stale pre-compaction usage as the current value; preserve the existing representation for unknown usage until a fresh response is available. Find the pre-existing repository context needed to expose this information consistently; return ranked code evidence and do not implement a patch.",
+      "context_budget": 6000,
+      "agent_call_limit": 5
+    },
+    {
+      "task_id": "pi_session_directory_config",
+      "task_prompt": "Allow a session storage directory to be configured through an application-named environment variable independently of the agent configuration directory. An explicit --session-dir option must take precedence, followed by the environment setting and then the existing settings/default behaviour. Support home-directory shorthand and make the CLI help distinguish agent configuration storage from session storage. Preserve existing session selection behaviour. Find the pre-existing repository context needed to implement this feature; return ranked code evidence and do not implement a patch.",
+      "context_budget": 6000,
+      "agent_call_limit": 5
+    },
+    {
+      "task_id": "pi_cli_mode_validation",
+      "task_prompt": "The --mode option should accept only text, json and rpc. Report invalid or missing values as argument errors instead of silently ignoring them or treating them as normal messages. When another option follows --mode, preserve that option for normal parsing. Valid values and repeated options must continue to work, while any invalid occurrence still produces a diagnostic. Find the pre-existing repository context needed to fix this behaviour; return ranked code evidence and do not implement a patch.",
       "context_budget": 6000,
       "agent_call_limit": 5
     }

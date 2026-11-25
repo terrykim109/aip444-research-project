@@ -1,0 +1,73 @@
+# =============================================================================
+# main-v1.0 — frozen main-experiment configuration (T3, 2026-11-25)
+# Inherits every technical pin from pilot-v1.0 (config/experiment.yaml):
+# retriever, embedding model, chunking, tokenizer, top-k 10, 6,000-token
+# evidence budget, 5-call Method B limit, temperature 0, gpt-6-luna,
+# prompt pilot-v1.0-agent-system-1. No pilot setting was altered.
+# Do not edit after runs begin; changes require main-v1.1 + team agreement.
+# =============================================================================
+
+meta:
+  protocol_version: main-v1.0
+  frozen_at: "2026-11-25"
+  owner: teammate_3
+  inherits: pilot-v1.0  # technical settings; see config/experiment.yaml
+
+tasks:
+  # Selected from the 8 verified candidates (benchmark/manifests/snapshots.json).
+  # Evidence for selection/exclusion: benchmark/reviews/t2_context_v1/overlap.csv
+  # (T2's pairwise essential-file Jaccard measurements).
+  selected_task_ids:
+    - pi_package_dedup_collisions   # D
+    - pi_rpc_context_statistics     # F
+    - pi_session_directory_config   # G
+    - pi_cli_mode_validation        # H
+  excluded:
+    - task_id: pi_lazy_extension_loading   # A
+      reason: pilot task; reusing it in the main set would largely duplicate
+        pilot data under identical settings (tasks must not be included solely
+        to increase the count)
+    - task_id: pi_package_filtering        # B
+      reason: pilot task; same as A
+    - task_id: pi_package_progress_conflicts  # C
+      reason: essential-file Jaccard 0.5 with selected task D (shared
+        package-manager.ts + resource-loader.ts) AND 0.5 with pilot task B;
+        the least distinct candidate of the package cluster
+    - task_id: pi_network_retry            # E
+      reason: essential-file Jaccard 1.0 with selected task F (identical
+        essential set, agent-session.ts) — not a meaningfully distinct
+        retrieval task; F preferred because E's commits are additionally
+        unreachable from upstream branch heads (fetch-by-SHA caveat)
+  known_caveats:
+    - H's single essential file (cli/args.ts) is contained in G's essential
+      set (Jaccard 0.33); prompts and target changes are distinct (CLI mode
+      validation vs session-directory env). Both retained; flagged for T1's
+      relevance review.
+
+execution:
+  repetitions: 3
+  methods: [one_shot_rag, agent_directed]
+  planned_runs: 24          # 4 tasks x 3 repetitions x 2 methods
+  matched_pairs: 12
+  paired_trial_id_template: "{task_id}__r{repetition}"
+  order: per task, per repetition, Method A then Method B
+  run_flag: "--protocol-version main-v1.0"   # labels each trace record
+
+ground_truth:
+  annotation_set: t2_context_v1   # benchmark/ground_truth/t2_context_v1/
+  status: provisional_pending_T1_review   # structurally validated only
+  rule: never exposed to either method; evaluator-side only. If T1's review
+    changes annotations, preserve both versions and report metrics per
+    version; never combine across versions.
+  sha256:
+    pi_package_dedup_collisions: efd397fc56f65d58b85c0f9bf75db1ded12890c0a81ad75fe21acbea782486dd
+    pi_rpc_context_statistics: c0752cde3124ae769f4c45a29074988d76d67e0de9802c7fa915e16a53fdd60c
+    pi_session_directory_config: 81f21a490e669578ff7d159fb6db3617d3daa0a522842cdaf05a98d140a7420a
+    pi_cli_mode_validation: af7193921a16351553a1ec229615064efd92301dbde245215d6d213e6c5b1b03
+
+setup:
+  worktrees: scripts/prepare_worktrees.py --task-id <each selected task>
+    --write-paths  (machine-local manifest paths; not committed)
+  indexes: scripts/build_corpus_indexes.py --task-id <each selected task>
+  evaluation: scripts/evaluate_pilot.py --annotation-set t2_context_v1
+    --task-id <each selected task>

@@ -195,8 +195,11 @@ all 8 tasks.
 | `t3/experiment-integration` (= `main` content) | `python -m pytest tests/unit -q` | 99 passed, 2 skipped |
 | `t1/semantic-retrieval` (PR #2) | `python -m pytest tests/unit -q` | 106 passed, 2 skipped |
 
-Mocked tests do not establish live API behavior; no live OpenRouter calls were
-made at any point in this validation (no key available).
+Mocked tests do not establish live API behavior. **Timeline correction
+(2026-11-25):** the statement that no live OpenRouter calls occurred applied
+only to the initial validation pass, before a key was available. It is
+superseded by §4: the embedding/chat probes and all 12 pilot runs were
+subsequently executed live on 2026-11-24.
 
 ---
 

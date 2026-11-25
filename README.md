@@ -1,9 +1,9 @@
 # Repository-Level Context for Coding Agents
 
-**Status:** Stages 1–6 complete — methods + orchestration implemented; **`pilot-v1.0`** unchanged.  
-**Next:** Stage 7 (paired pilot method-run records) — not started.  
-**Available now:** Shared Stage 5 indexes/retriever; Method A/B runners; OpenRouter chat client; traces (`docs/methods_stage6.md`).  
-**Not yet done:** The 12 pilot experimental trial records / Stage 7+ analysis.
+**Status (2026-11-25):** Stages 1–7 complete and the **main experiment executed** — pilot `pilot-v1.0` (12/12 runs) and `main-v1.0` (24/24 runs, 4 tasks) both completed live with zero failures; preliminary file-level results computed.  
+**Next:** T1 (Rehat) — ground-truth relevance review, authoritative evaluation, research synthesis/draft.  
+**Where to look:** `research/docs/handoff_t3_integration.md` (umbrella), `handoff_t3_pilot.md`, `handoff_t3_main_experiment.md`, `research/results/run_manifest.json` (all 36 runs + trace hashes), `research/config/main_experiment.yaml` (frozen main config).  
+**Requirements to reproduce:** OpenRouter API key in `research/.env`, a local Pi clone, and machine-local worktrees (`prepare_worktrees.py --write-paths`). Raw traces are gitignored — T1 receives them out-of-band, verified against the manifest hashes.
 
 ---
 
@@ -113,8 +113,8 @@ Do not modify upstream Pi or mix experimental code into these trees. Details: `d
 
 **Advanced reserve (not one of the eight):** `32bcdc9` — investigate reported CI issue before acceptance.
 
-**Stage 2 verification:** A–D and F–H are **verified** (full target/parent SHAs in `benchmark/manifests/snapshots.json`).  
-**Candidate E** (`pi_network_retry` / `37067e0`) is **verification_failed** — object not present in fetched upstream history. See `docs/snapshot_verification.md`.  
+**Verification (current):** all **8/8 verified** (full target/parent SHAs in `benchmark/manifests/snapshots.json`). Candidate E was resolved by T2; its commits are unreachable from upstream branch heads, so fresh clones need `git fetch origin <target-sha>` first.  
+**Run sets:** A/B = `pilot-v1.0` pilots (executed); D/F/G/H = frozen `main-v1.0` main-experiment set (executed) — selection rationale and C/E exclusions in `research/config/main_experiment.yaml`.  
 Agent-visible `benchmark/tasks.json` still omits SHAs (evaluator-side only).
 
 ---
@@ -231,33 +231,32 @@ Copy `.env.example` → `.env` and set `PI_REPO_PATH`, `OPENROUTER_API_KEY`, and
 
 ---
 
-## 16. Future execution workflow
+## 16. Execution workflow (actual, as run)
 
-See `docs/EXECUTION_CHECKLIST.md`. **Stage 5 corpus/retrieval is complete; Stage 6 is next.**
+See `docs/EXECUTION_CHECKLIST.md` and the T3 handoffs. All commands run from `research/` with the venv active and `.env` set (`OPENROUTER_API_KEY`, `PI_REPO_PATH`).
 
 ```bash
-cd research
 pip install -e ".[dev]"
+python -m pytest tests/unit -q                      # 106 passed, 2 skipped
 
-# Stage 2 verification (exits 1 while candidate E unresolved)
-python scripts/verify_benchmark.py --repo-path C:\Users\froze\Desktop\pi-upstream
+# Snapshots + worktrees (machine-local; manifest paths are not committed)
+python scripts/verify_benchmark.py --repo-path <pi-clone> --dry-run
+python scripts/prepare_worktrees.py --repo-path <pi-clone> --worktree-root <root> \
+  --task-id <task> ... --write-paths
 
-# Stage 5 — chunk both pilots; embed+index when OPENROUTER_API_KEY is set
-python scripts/build_corpus_indexes.py --chunks-only
-python scripts/probe_openrouter_embeddings.py
+# Indexes (pilots by default; --task-id for main-v1.0 tasks)
 python scripts/build_corpus_indexes.py
+python scripts/build_corpus_indexes.py --task-id pi_cli_mode_validation  # etc.
 
-python -m pytest tests/unit -q
+# Runs (per task, per repetition 1..3, Method A then B)
+python scripts/run_method_a.py --task-id <task> --repetition <rep> --protocol-version main-v1.0
+python scripts/run_method_b.py --task-id <task> --repetition <rep> --protocol-version main-v1.0
+
+# Preliminary file-level evaluation (T1's independent evaluation is authoritative)
+python scripts/evaluate_pilot.py --annotation-set t2_context_v1 --task-id <task> ...
 ```
 
-**Planned** (Stage 6+ — independent path):
-
-```bash
-# PLANNED — Stage 6+
-# python scripts/run_method_a.py --task ... --rep 1
-# python scripts/run_method_b.py --task ... --rep 1  # needs OPENROUTER chat model
-# python scripts/evaluate.py --run-id ...
-```
+Artifacts: traces `results/raw/traces/` (gitignored), manifest + hashes `results/run_manifest.json` (committed), evaluation outputs `results/processed/` (gitignored).
 
 ---
 
@@ -287,7 +286,7 @@ Also track cumulative unique evidence exposure and newly discovered relevant fil
 
 ## 19. Research limitations
 
-Summary: candidate E unresolved; A/B GT preliminary only; Method A/B not run; live OpenRouter embeddings pending without API key; two-task pilot limits generalization; C/D overlap risk; retrieval quality ≠ implementation success. Full list: `docs/limitations.md`.
+Summary (updated 2026-11-25): all ground truth remains **provisional pending T1 relevance review** (results may shift after review); 4-task main set limits generalization and no statistical significance is claimed; C and E excluded from the main set for overlap (decisions recorded in `config/main_experiment.yaml`, open to revisit); G/H essential-file containment caveat; Candidate E needs fetch-by-SHA on fresh clones; raw traces are local-only until transferred to T1; retrieval quality ≠ implementation success. Full list: `docs/limitations.md`.
 
 ---
 
@@ -297,15 +296,17 @@ Summary: candidate E unresolved; A/B GT preliminary only; Method A/B not run; li
 |---|---|
 | Scaffolding & docs | **Created (Stage 1)** |
 | Ownership / integration alignment | **Documented (Stage 1.5)** |
-| Pi clone + pilot worktrees | **Prepared (Stage 2)** |
-| Snapshot verification | **7/8 verified**; E failed (`verified_partial`) |
-| Protocol freeze `pilot-v1.0` | **Design frozen (Stage 4)**; technical pins **configured (Stage 5)** |
+| Pi clone + pilot worktrees | **Prepared (Stage 2)**; re-verified independently on a second machine (T3) |
+| Snapshot verification | **8/8 verified** (E resolved by T2; fetch-by-SHA caveat) |
+| Protocol freeze | `pilot-v1.0` frozen; `main-v1.0` frozen (`config/main_experiment.yaml`) — pilot pins inherited unchanged |
 | Integration schemas & contracts | **Documented** (`schemas/`, handoff) |
-| Ground-truth annotations | **A/B preliminary_self_validated** (Stage 3); others deferred |
-| Semantic retriever / index | **Verified** — OpenRouter `text-embedding-3-small` + NumPy cosine indexes for both pilots |
-| Method A / Method B / chat adapter / runner | **Implemented (Stage 6)** — plumbing verified; pilot batch not run |
-| Experiments & findings | Not started (Stage 7+) |
-| Optional T1/T2/T3 upgrades | None received (not required) |
+| Ground-truth annotations | All 8 structurally validated (`t2_context_v1`); **provisional pending T1 relevance review** |
+| Semantic retriever / index | **Verified live** — 6 snapshot indexes built (2 pilot + 4 main) |
+| Method A / Method B / chat adapter / runner | **Implemented (Stage 6)** and exercised live |
+| Pilot (Stage 7) | **Executed 2026-11-24** — 12/12 runs, 6/6 pairs, zero failures |
+| Main experiment (`main-v1.0`) | **Executed 2026-11-25** — 24/24 runs, 12/12 pairs, zero failures; preliminary mixed result (B wins 2 tasks, A wins 1, 1 tie) |
+| Findings / synthesis / report | **T1 (pending)** — `results/findings.md` not yet written; T3 preliminary numbers only |
+| Teammate contributions merged | T2 benchmark (PR #1), retrieval delivery (PR #2), T3 validation + pilot (PR #3) |
 
 ---
 
@@ -322,6 +323,9 @@ Summary: candidate E unresolved; A/B GT preliminary only; Method A/B not run; li
 | [protocol_freeze.md](docs/protocol_freeze.md) | Stage 4 frozen pilot protocol |
 | [corpus_and_retrieval.md](docs/corpus_and_retrieval.md) | Stage 5 corpus, embeddings, index, retriever |
 | [methods_stage6.md](docs/methods_stage6.md) | Stage 6 Method A/B, chat client, traces |
+| [handoff_t3_integration.md](research/docs/handoff_t3_integration.md) | T3 umbrella handoff to T1 |
+| [handoff_t3_pilot.md](research/docs/handoff_t3_pilot.md) | Validation + executed pilot record |
+| [handoff_t3_main_experiment.md](research/docs/handoff_t3_main_experiment.md) | Frozen main-v1.0 + executed main run record |
 | [pi_repository_notes.md](docs/pi_repository_notes.md) | Pinned AGENTS.md / toolchain notes |
 | [task_cards.md](docs/task_cards.md) | Human-readable tasks |
 | [limitations.md](docs/limitations.md) | Threats to validity |

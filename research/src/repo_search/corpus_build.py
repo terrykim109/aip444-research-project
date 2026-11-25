@@ -7,7 +7,7 @@ import json
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 from repo_search.chunking import (
     CHUNKER_VERSION,
@@ -270,12 +270,19 @@ def build_snapshot_index(
     return stats
 
 
-def load_pilot_snapshot_specs() -> list[dict[str, str]]:
+def load_pilot_snapshot_specs(
+    task_ids: Sequence[str] | None = None,
+) -> list[dict[str, str]]:
+    """Default: verified pilots. With task_ids: those verified tasks instead
+    (main-experiment builds); still requires worktree_path and parent_sha."""
     manifest = research_root() / "benchmark" / "manifests" / "snapshots.json"
     data = json.loads(manifest.read_text(encoding="utf-8"))
     out: list[dict[str, str]] = []
     for snap in data.get("snapshots") or []:
-        if snap.get("pilot_status") != "pilot":
+        if task_ids is not None:
+            if snap.get("task_id") not in task_ids:
+                continue
+        elif snap.get("pilot_status") != "pilot":
             continue
         if snap.get("verification_status") != "verified":
             continue
@@ -293,6 +300,7 @@ def build_all_pilot_indexes(
     embedder: OpenRouterEmbedder | None = None,
     artifacts_root: Path | None = None,
     dry_run_chunks_only: bool = False,
+    task_ids: Sequence[str] | None = None,
 ) -> list[CorpusStats]:
     artifacts_base = Path(artifacts_root) if artifacts_root is not None else (
         research_root() / "artifacts"
@@ -305,7 +313,7 @@ def build_all_pilot_indexes(
     )
     try:
         stats_list: list[CorpusStats] = []
-        for spec in load_pilot_snapshot_specs():
+        for spec in load_pilot_snapshot_specs(task_ids):
             idx_dir = default_index_dir(spec["snapshot_sha"], artifacts_base)
             stats = build_snapshot_index(
                 worktree=Path(spec["worktree_path"]),

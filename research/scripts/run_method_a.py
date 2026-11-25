@@ -31,6 +31,7 @@ def main() -> int:
     parser.add_argument("--task-id", required=True)
     parser.add_argument("--repetition", type=int, default=1)
     parser.add_argument("--no-persist", action="store_true")
+    parser.add_argument("--protocol-version", default="pilot-v1.0")
     args = parser.parse_args()
     _load_dotenv(ROOT / ".env")
 
@@ -41,6 +42,7 @@ def main() -> int:
         method="one_shot_rag",
         repetition=args.repetition,
         persist_trace=not args.no_persist,
+        protocol_version=args.protocol_version,
     )
     summary = {
         "task_id": record["task_id"],
