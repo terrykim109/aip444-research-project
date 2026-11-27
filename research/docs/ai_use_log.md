@@ -38,3 +38,10 @@
 No model identifier beyond ChatGPT/Codex was recorded. No retrieval implementation,
 agent controller, behavior-analysis utility, experimental result, personal reflection
 or human review was fabricated. No GitHub push is performed in this delivery.
+
+## T1 final evaluation and synthesis — 26 November 2026
+
+| Date | Tool / model | Stage | Task summary | Human oversight | Output used? | Notes |
+|---|---|---|---|---|---|---|
+| 2026-11-26 | Claude (Claude Opus 5.5), Claude app with the local repository linked | T1 | Verified manifest/GT hashes; searched for traces (missing); cloned public Pi read-only for GT review; drafted `t1_reviewed_v1` (+1 supporting file in F) with rationale; wrote `t1_verify_traces.py`, `t1_evaluate.py`, `t1_analyze_method_b.py`, `t1_demo_replay.py`, `t1_build_reviewed_gt.py` and synthetic tests; verified 4 papers and added SWE-agent; drafted report, presentation outline, demo guide, checklist, handoff; reconciled READMEs/logs | Rehat Preet Kaur must review every GT decision and all drafted text before submission | Pending review | No experiments rerun; no results, reflections, dry-run feedback or citations fabricated; unverifiable values marked [TO BE COMPLETED]; no secrets read or written |
+| 2026-11-26 | Claude (Claude Opus 5.5) | T1 | Wrote `t1_rescore_from_t3_eval.py`; rebuilt and rescored 36 runs from T3's eval files; updated report results, critical analysis, conclusion, findings, outline, demo fallback, checklist | Rehat Preet Kaur to review | Pending review | Rescore reproduces T3's numbers exactly; no traces available |

@@ -1,6 +1,6 @@
 # Literature Foundation
 
-This document summarises three papers that inform our methodology. It does **not** invent numerical performance results or treat these systems as additional experimental arms. Our primary experiment remains the two-method comparison:
+This document summarises the scholarly papers that inform our methodology (originally three; CodeRAG-Bench was added by T2 and SWE-agent by T1 — see the final sections). It does **not** invent numerical performance results or treat these systems as additional experimental arms. Our primary experiment remains the two-method comparison:
 
 - **Method A — One-shot code RAG**
 - **Method B — Agent-directed code search**
@@ -121,3 +121,28 @@ Wang et al. (2025), Sections 2.3–2.4, describe canonical-document annotations 
 Wang, Z. Z., Asai, A., Yu, X. V., Xu, F. F., Xie, Y., Neubig, G., & Fried, D. (2025). CodeRAG-Bench: Can retrieval augment code generation? In *Findings of the Association for Computational Linguistics: NAACL 2025* (pp. 3199–3214). Association for Computational Linguistics. https://doi.org/10.18653/v1/2025.findings-naacl.176
 
 Primary record and PDF verified: https://aclanthology.org/2025.findings-naacl.176/
+
+---
+
+## T1 verification of the scholarly foundation (2026-11-26)
+
+T1 checked each entry against its primary publisher record. Bibliographic details below are as verified; claims used in the report are limited to what the primary record supports.
+
+| Paper | Verified record | Claim the project relies on | Status |
+|---|---|---|---|
+| Liu, Xu & McAuley (2024) RepoBench | ICLR 2024 proceedings PDF (link above) | Three tasks — RepoBench-R (retrieval of cross-file snippets), -C (next-line completion), -P (pipeline); retrieval scored separately with accuracy@k | Verified |
+| Zhang et al. (2023) RepoCoder | EMNLP 2023, pp. 2471–2484, doi:10.18653/v1/2023.emnlp-main.151 | Iterative retrieval–generation loop for repository-level completion; reported to beat in-file and vanilla-RAG baselines | Verified (authors: F. Zhang, B. Chen, Y. Zhang, J. Keung, J. Liu, D. Zan, Y. Mao, J.-G. Lou, W. Chen) |
+| Wu et al. (2024) Repoformer | ICML 2024, PMLR 235, pp. 53270–53290 | Always-retrieve is wasteful: many retrieved contexts are unhelpful or harmful; selective retrieval keeps quality while cutting inference cost | Verified (authors: D. Wu, W. U. Ahmad, D. Zhang, M. K. Ramanathan, X. Ma) |
+| Wang et al. (2025) CodeRAG-Bench | Findings of NAACL 2025, pp. 3199–3214, doi:10.18653/v1/2025.findings-naacl.176 | Retrieval evaluated separately from generation with canonical-document annotations; retrievers often fail to fetch useful context | Verified (T2 entry above confirmed) |
+
+Correction note: the RepoCoder title in Section 2 omits the "RepoCoder:" prefix; the verified full title is *RepoCoder: Repository-level code completion through iterative retrieval and generation*.
+
+## T1 additional source: SWE-agent (agent-directed repository search)
+
+Yang, J., Jimenez, C. E., Wettig, A., Lieret, K., Yao, S., Narasimhan, K., & Press, O. (2024). SWE-agent: Agent-computer interfaces enable automated software engineering. In *Advances in Neural Information Processing Systems 37 (NeurIPS 2024)*. https://doi.org/10.52202/079017-1601
+
+Primary records checked: NeurIPS 2024 proceedings abstract page (https://papers.neurips.cc/paper_files/paper/2024/hash/5a7c947568c1b1328ccc5230172e1e7c-Abstract-Conference.html) and the paper full text.
+
+**Why it is relevant.** The four foundation papers study code *completion*; SWE-agent studies an LM *agent* resolving repository-level issues through tools, which is the closest prior setting to our Method B. Its agent–computer interface gives the agent repository search commands (`find_file`, `search_file`, `search_dir`) whose output format is designed for the model, and its ablation on SWE-bench Lite reports that a summarised search interface outperformed an interactive "step through each match" interface — which did worse than having no search tools — because agents exhausted their budget stepping through matches. This motivates two things in our study: (1) treating Method B's tool interface (top-k semantic search, `grep`, `read_file`, `find_symbol`, call limit, shared evidence budget) as a design factor that limits how far our results generalise, and (2) analysing Method B's traces for budget exhaustion and redundant evidence rather than assuming more agent steps help.
+
+**Limits.** SWE-agent's outcome is end-to-end issue resolution (pass@1), not file-level retrieval quality; we do not reuse its numbers, interface or benchmark, and it is not an experimental arm.

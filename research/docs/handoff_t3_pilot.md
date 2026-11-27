@@ -179,6 +179,8 @@ python scripts/evaluate_pilot.py --output results/processed/pilot_eval.json
 
 ## 5. Main experiment readiness
 
+> **Superseded (T1, 2026-11-26):** the main experiment was frozen and executed on 2026-11-25 (24/24 runs). See `handoff_t3_main_experiment.md`. The text below is the 2026-11-24 snapshot.
+
 See `docs/handoff_t3_main_experiment.md`. Summary: the pilot blocker is now
 cleared; main execution remains **blocked on team decisions**, not machinery —
 task-set selection (≥4 of the 8 verified tasks, C/D overlap decision) and
@@ -218,6 +220,8 @@ subsequently executed live on 2026-11-24.
 ---
 
 ## 8. What T1 (Rehat) needs to resolve or complete
+
+> **Status (T1, 2026-11-26):** items 1, 2 and 4 are addressed. See `docs/t1_ground_truth_review.md`, `scripts/t1_evaluate.py` and `docs/t1_evaluation.md`. An evaluator now exists (T3's preliminary one and T1's independent one).
 
 1. **Human relevance review** of T2's ground truth (all 8 tasks are
    `pending_student_and_peer_review`); any changes after runs begin require a

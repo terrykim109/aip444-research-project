@@ -62,3 +62,9 @@ The retrieval stack, agent controller/tools, orchestration, token accounting and
 analysis code are unchanged. No experimental runs or completed human relevance
 review are claimed. Time spent is not recorded. This entry records local work;
 GitHub publication is performed manually by the student.
+
+## T1 final evaluation and synthesis — 26 November 2026
+
+| Date | Workstream | Member (name) | Activity | Artifacts | Hours (approx.) |
+|---|---|---|---|---|---|
+| 2026-11-26 | T1 | Rehat Preet Kaur (AI-assisted, see AI use log) | Verified T3 manifest/GT freeze; documented missing traces; GT relevance review → `t1_reviewed_v1`; independent evaluator, trace verifier, Method B analysis, demo replay (+ tests); literature verification + SWE-agent; report draft with appendices; presentation outline; demo guide; submission checklist; README/limitations reconciliation | `docs/t1_ground_truth_review.md`, `docs/t1_evaluation.md`, `docs/handoff_t1_final.md`, `benchmark/ground_truth/t1_reviewed_v1/`, `scripts/t1_*.py`, `tests/unit/test_t1_evaluation.py`, `report.md`, `docs/presentation_outline.md`, `docs/demo.md`, `docs/final_submission_checklist.md` | *(fill)* |

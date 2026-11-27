@@ -1,0 +1,339 @@
+{
+  "task_id": "pi_package_dedup_collisions",
+  "snapshot_sha": "c5c515f56096f212e0ad1e7f5c3c9b115908d37c",
+  "annotation_version": "t1-1.0",
+  "annotation_set": "t1_reviewed_v1",
+  "implementation_origin": "teammate_2",
+  "review_status": "validated",
+  "human_review_status": "reviewed",
+  "required_files": [
+    "packages/coding-agent/src/core/package-manager.ts",
+    "packages/coding-agent/src/core/resource-loader.ts",
+    "packages/coding-agent/src/modes/interactive/interactive-mode.ts"
+  ],
+  "files": [
+    {
+      "path": "packages/coding-agent/src/core/package-manager.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "The parent aggregates global/project packages without identity-level deduplication and resolves resources without origin metadata.",
+      "symbols": [
+        "DefaultPackageManager.resolve"
+      ],
+      "line_spans": [
+        {
+          "symbol": "DefaultPackageManager.resolve",
+          "start_line": 272,
+          "end_line": 317,
+          "anchor": "async resolve(",
+          "content_sha256": "308a29440b2fa652a723fd5d6e04b8dfc99d1828fe04fcabe7147859e2b715d7"
+        }
+      ],
+      "blob_sha": "2534526e563ebfb942b6bad42d2c9164ad6e1b92",
+      "content_sha256": "1e2e70017508ec9e4e9ee6da9f3964e7ba3000fd83dad52f97af58b5f9d9f30a"
+    },
+    {
+      "path": "packages/coding-agent/src/core/resource-loader.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Owns aggregation of extension, skill, prompt and theme results and diagnostics, before the target introduces structured collision data.",
+      "symbols": [
+        "DefaultResourceLoader.reload"
+      ],
+      "line_spans": [
+        {
+          "symbol": "DefaultResourceLoader.reload",
+          "start_line": 264,
+          "end_line": 351,
+          "anchor": "async reload()",
+          "content_sha256": "aa3ae36b17ec917cde8c79683b5ed8f37bd0ed4d3b2a65e86e8a6163471efb83"
+        }
+      ],
+      "blob_sha": "346dc6966a8cacae7a5ca6b42563110777ea60fd",
+      "content_sha256": "60d8a29980d8e4c25a5d76285addb9b3c7c2c90f427f42dbfb76ffeb4389d8fc"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/interactive/interactive-mode.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Shows resource lists and warnings to the user during startup and reload; needed for the requested origin/scope presentation.",
+      "symbols": [
+        "InteractiveMode.showLoadedResources"
+      ],
+      "line_spans": [
+        {
+          "symbol": "InteractiveMode.showLoadedResources",
+          "start_line": 651,
+          "end_line": 693,
+          "anchor": "private showLoadedResources",
+          "content_sha256": "45b4788bc92eb0770391669208cc9cff83c63f8079d1821f25da2a41571d04b4"
+        }
+      ],
+      "blob_sha": "486743199cbe0a45aea5a8d742157b858d24b4a0",
+      "content_sha256": "613382e9947a0ac9334467ad7bcb6b9b4f1a8a3165f2b9e153d5d16f4bc55718"
+    },
+    {
+      "path": "packages/coding-agent/src/core/skills.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Pre-existing named-skill collision and real-path deduplication logic establishes first-winner behaviour to preserve.",
+      "symbols": [
+        "loadSkills.addSkills"
+      ],
+      "line_spans": [
+        {
+          "symbol": "loadSkills.addSkills",
+          "start_line": 316,
+          "end_line": 347,
+          "anchor": "const skillMap",
+          "content_sha256": "3ea3c8083f511c18b64c5708dc9ab72e8fdce96a25893392889f4d464cbcc9e0"
+        }
+      ],
+      "blob_sha": "489e58481bf78bc403a0c1292846457b15677e48",
+      "content_sha256": "68446557dd8a35a99e78189044bd245db8eafccbfa3486506d26c869a8e0eb68"
+    },
+    {
+      "path": "packages/coding-agent/src/core/prompt-templates.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "The prompt template shape lacks an explicit source file path, which is relevant to reporting collision provenance.",
+      "symbols": [
+        "PromptTemplate",
+        "loadTemplateFromFile"
+      ],
+      "line_spans": [
+        {
+          "symbol": "PromptTemplate",
+          "start_line": 7,
+          "end_line": 15,
+          "anchor": "export interface PromptTemplate",
+          "content_sha256": "3a1275e4b8fab4e2c7ea14ed3767a553539d5ed7d1dacaa4f2bd83a0c616cb33"
+        },
+        {
+          "symbol": "loadTemplateFromFile",
+          "start_line": 101,
+          "end_line": 132,
+          "anchor": "function loadTemplateFromFile",
+          "content_sha256": "f44a37c8b24a646ce8a4ec72bee7708f0cbcd87bbea012ab9e920dd11ade4d91"
+        }
+      ],
+      "blob_sha": "51e5338d55e2796153aae86841f416b8ca448715",
+      "content_sha256": "4a5e96cd856eec9e8ff8f2ca1cbf9491a3b6cc8e4603411810e4cbd989d4612d"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Global/project settings and in-memory persistence affect duplicate-source precedence tests.",
+      "symbols": [
+        "SettingsManager.loadProjectSettings",
+        "SettingsManager.saveProjectSettings"
+      ],
+      "line_spans": [
+        {
+          "symbol": "SettingsManager.loadProjectSettings",
+          "start_line": 229,
+          "end_line": 242,
+          "anchor": "private loadProjectSettings",
+          "content_sha256": "5fd837b6227a98cf28f2f7505ea4a4bfe9cd7feeadd25296f42f4c1f2d63c226"
+        },
+        {
+          "symbol": "SettingsManager.saveProjectSettings",
+          "start_line": 283,
+          "end_line": 296,
+          "anchor": "private saveProjectSettings",
+          "content_sha256": "f5df833d4d12f7e8a7ae30a46e6f90819a090321ca2364af81fbab2a4b4f64ed"
+        }
+      ],
+      "blob_sha": "523ee0edce3d01027373b4b826ad4e66562594b1",
+      "content_sha256": "2943d90d900b6b104405cdd51a12cfd8ed7a57bf3861a8354815eee4e575bc4f"
+    },
+    {
+      "path": "packages/coding-agent/src/core/extensions/loader.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Configured extension-directory discovery is part of the compatibility requirement.",
+      "symbols": [
+        "discoverAndLoadExtensions configured paths"
+      ],
+      "line_spans": [
+        {
+          "symbol": "discoverAndLoadExtensions configured paths",
+          "start_line": 483,
+          "end_line": 501,
+          "anchor": "configuredPaths",
+          "content_sha256": "83982cae792934c545d3cbf55ec4c4e1e68bb9d3b471ad5235803601323d3aac"
+        }
+      ],
+      "blob_sha": "df10eda5130e3848c6af3343066c21770ee001fa",
+      "content_sha256": "710767527587f4b437e9f8802a91b90cf43598f911709a03ac9f4fa9759a9d75"
+    }
+  ],
+  "relevant_symbols": [
+    {
+      "path": "packages/coding-agent/src/core/package-manager.ts",
+      "symbol": "DefaultPackageManager.resolve",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/resource-loader.ts",
+      "symbol": "DefaultResourceLoader.reload",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/interactive/interactive-mode.ts",
+      "symbol": "InteractiveMode.showLoadedResources",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/skills.ts",
+      "symbol": "loadSkills.addSkills",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/prompt-templates.ts",
+      "symbol": "PromptTemplate",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/prompt-templates.ts",
+      "symbol": "loadTemplateFromFile",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "symbol": "SettingsManager.loadProjectSettings",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "symbol": "SettingsManager.saveProjectSettings",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/extensions/loader.ts",
+      "symbol": "discoverAndLoadExtensions configured paths",
+      "relevance": "supporting"
+    }
+  ],
+  "relevant_spans": [
+    {
+      "path": "packages/coding-agent/src/core/package-manager.ts",
+      "start_line": 272,
+      "end_line": 317,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/resource-loader.ts",
+      "start_line": 264,
+      "end_line": 351,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/interactive/interactive-mode.ts",
+      "start_line": 651,
+      "end_line": 693,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/skills.ts",
+      "start_line": 316,
+      "end_line": 347,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/prompt-templates.ts",
+      "start_line": 7,
+      "end_line": 15,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/prompt-templates.ts",
+      "start_line": 101,
+      "end_line": 132,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "start_line": 229,
+      "end_line": 242,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "start_line": 283,
+      "end_line": 296,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/extensions/loader.ts",
+      "start_line": 483,
+      "end_line": 501,
+      "relevance": "supporting"
+    }
+  ],
+  "existing_tests": [
+    "packages/coding-agent/test/package-manager.test.ts",
+    "packages/coding-agent/test/resource-loader.test.ts",
+    "packages/coding-agent/test/sdk-skills.test.ts"
+  ],
+  "target_added_tests": [],
+  "tests_modified_by_target": [
+    "packages/coding-agent/test/package-manager.test.ts",
+    "packages/coding-agent/test/sdk-skills.test.ts"
+  ],
+  "target_added_files_not_retrievable": [],
+  "test_availability": {
+    "execution_status": "not_executed",
+    "pre_existing": [
+      {
+        "path": "packages/coding-agent/test/package-manager.test.ts",
+        "content_sha256": "4423f684907b8ab805e849771fa7e0720f333aa890e23d51e5d5d5e7dded6290",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/package-manager.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      },
+      {
+        "path": "packages/coding-agent/test/resource-loader.test.ts",
+        "content_sha256": "0ec94a3426c96af77d50764d9db643c273f9a678bcfc4b08d6c411084376200b",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/resource-loader.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      },
+      {
+        "path": "packages/coding-agent/test/sdk-skills.test.ts",
+        "content_sha256": "f16c034b400a02227ea0042a0f0238d24ac4c678556da2ea2b600617067ecf82",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/sdk-skills.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      }
+    ],
+    "target_modified_test_files_note": "Only parent contents are retrieval eligible; later-added test cases are future evidence."
+  },
+  "annotation_notes": [
+    "Recommend reserve: 18 changed files, broad presentation/refactoring work, and overlap with pilot pi-002 and reserve pi-003. Task prompt scopes the user-visible deduplication/collision behaviour; incidental example/type-adapter edits are not automatically gold.",
+    "AI-assisted T2 proposal. Structural checks are separate from pending human relevance review.",
+    "This annotation is tied to the T2 task prompt; do not silently mix it into pilot-v1.0 scoring.",
+    "T1 review (t1_reviewed_v1): all T2 judgments confirmed; no changes."
+  ],
+  "unjudged_policy": "Unlisted files are unjudged; disclose any closed-world scoring convention and review additional useful evidence without method identity before freezing.",
+  "review_detail": "Reviewed by T1 only (single reviewer); no peer/second reviewer. Not fully blind (T3 preliminary aggregates seen; no traces consulted)."
+}

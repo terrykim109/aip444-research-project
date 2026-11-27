@@ -55,3 +55,14 @@ The original Candidate E is now resolved. T2 source/schema checks cover all eigh
 candidate annotations. Human relevance sign-off and main-set acceptance are pending.
 The package cluster and the E/F shared essential file are recorded in the overlap
 assessment. The T2 set is versioned separately from the frozen A/B pilot.
+
+## T1 update — 2026-11-26 (supersedes stale items above; originals kept for history)
+
+- Items 5, 7 and 13 are **superseded**. E is resolved; all eight annotations exist; both experiments were executed (36 runs).
+- **Raw traces not transferred to T1.** File-set scores were rescored from T3's per-run evaluation files (cross-checked against the manifest). Per-call Method B behaviour, MRR/nDCG, leakage and compliance claims stay T3-reported, unverified until they are hash-verified (`docs/t1_evaluation.md`).
+- **Single, non-blind GT review.** `t1_reviewed_v1` was reviewed by T1 only, after seeing T3's preliminary aggregates (no traces). There is no inter-annotator agreement.
+- **Closed-world scoring.** Unjudged files count as non-relevant, so a useful unannotated file lowers precision.
+- **Pilot/main not comparable as one set.** They differ in prompt version and annotation version, so there is no combined win count.
+- **Method B fallback packs.** When B stops on a limit, its pack is every charged excerpt (7/12 main runs per manifest), so its precision reflects search breadth rather than selection.
+- **G/H share an essential file** (`cli/args.ts`), so the effective number of independent tasks is slightly below four.
+- **Tool interface as a factor.** Method B's tools, top-k, 5-call limit and shared budget shape its performance (cf. SWE-agent's interface ablations). Results may not transfer to other agent designs.

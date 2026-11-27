@@ -1,0 +1,274 @@
+{
+  "task_id": "pi_session_directory_config",
+  "snapshot_sha": "8632e1b9484b9be62e8fc9b31757176f7c560313",
+  "annotation_version": "t1-1.0",
+  "annotation_set": "t1_reviewed_v1",
+  "implementation_origin": "teammate_2",
+  "review_status": "validated",
+  "human_review_status": "reviewed",
+  "required_files": [
+    "packages/coding-agent/src/config.ts",
+    "packages/coding-agent/src/main.ts",
+    "packages/coding-agent/src/cli/args.ts"
+  ],
+  "files": [
+    {
+      "path": "packages/coding-agent/src/config.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Defines application-specific environment naming and the existing home-directory expansion convention.",
+      "symbols": [
+        "ENV_AGENT_DIR",
+        "getAgentDir"
+      ],
+      "line_spans": [
+        {
+          "symbol": "ENV_AGENT_DIR",
+          "start_line": 321,
+          "end_line": 329,
+          "anchor": "export const ENV_AGENT_DIR",
+          "content_sha256": "c2324a6b4cac56d23069235663dead307cef28421ccb6de785beeb3068782333"
+        },
+        {
+          "symbol": "getAgentDir",
+          "start_line": 343,
+          "end_line": 353,
+          "anchor": "export function getAgentDir",
+          "content_sha256": "71f536a52d3c390cd754dcda46dc6c3839da372934028efb2dc2dbf687c4d813"
+        }
+      ],
+      "blob_sha": "7a8a477e2f4725ec3c7cbf8d7d52d19f2ebcd886",
+      "content_sha256": "28cb876e0c1c959e5be6cac9061b2bd58707b7f1f97246a89ea77973285f12e0"
+    },
+    {
+      "path": "packages/coding-agent/src/main.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Selects the session directory before session selection; the new precedence must enter here.",
+      "symbols": [
+        "main session directory selection"
+      ],
+      "line_spans": [
+        {
+          "symbol": "main session directory selection",
+          "start_line": 486,
+          "end_line": 497,
+          "anchor": "const sessionDir = parsed.sessionDir",
+          "content_sha256": "5d2307f83fdd752ce62b312c4cfa4da08ab5c75ee02c9208279b9462afdaf6f4"
+        }
+      ],
+      "blob_sha": "821f602c5594312f20d11ba8915075228cfe0af9",
+      "content_sha256": "7c41c618a922eb4ce93761db4ee757096e55fe7702077a2bf137e8a28a727233"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Owns the explicit session-directory argument and user-visible environment-variable help contract.",
+      "symbols": [
+        "parseArgs session-dir option",
+        "printHelp environment variables"
+      ],
+      "line_spans": [
+        {
+          "symbol": "parseArgs session-dir option",
+          "start_line": 96,
+          "end_line": 102,
+          "anchor": "arg === \"--session-dir\"",
+          "content_sha256": "e70b01129421256b20811df440e48a7a041c69665e54a22b5b061d6184715c41"
+        },
+        {
+          "symbol": "printHelp environment variables",
+          "start_line": 322,
+          "end_line": 329,
+          "anchor": "ENV_AGENT_DIR.padEnd",
+          "content_sha256": "08efe3a960cb979560dcde1329731033ea083fc1d353c2fc8630e512dce47228"
+        }
+      ],
+      "blob_sha": "de0a79d7e4e3e780b5dd98d90d3b251618ac9a52",
+      "content_sha256": "9caa56b1c961b997500e0fde900a358d7e2c514cc7616e48962198b0aa6a892a"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Unchanged existing configured session directory and tilde expansion supply the fallback behaviour.",
+      "symbols": [
+        "SettingsManager.getSessionDir"
+      ],
+      "line_spans": [
+        {
+          "symbol": "SettingsManager.getSessionDir",
+          "start_line": 576,
+          "end_line": 588,
+          "anchor": "getSessionDir()",
+          "content_sha256": "a0a62106bf9ce015b58eef3652c18977281e2becb6e32de9b6b4524b2cfa817f"
+        }
+      ],
+      "blob_sha": "e82defe2135298fbd379a0ab2af83c0ef1b4d893",
+      "content_sha256": "badd6fc4d9d6b8c38ab6d7194ddaacdf3222b264f3686061201ccfeb467fc825"
+    },
+    {
+      "path": "packages/coding-agent/src/core/session-manager.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Unchanged default session-directory logic explains how an absent override falls back to per-working-directory storage.",
+      "symbols": [
+        "getDefaultSessionDir"
+      ],
+      "line_spans": [
+        {
+          "symbol": "getDefaultSessionDir",
+          "start_line": 428,
+          "end_line": 435,
+          "anchor": "export function getDefaultSessionDir",
+          "content_sha256": "d4919eaf5d559e367318868f6560c9850d881b6e68b6d0554a382c0757bc126d"
+        }
+      ],
+      "blob_sha": "f366274b73aae82758e0c4b06273153b4bef55d5",
+      "content_sha256": "24dcf490aa4901c007729af7db84f4da47735cf35f66dcd1749e44d2486579c9"
+    }
+  ],
+  "relevant_symbols": [
+    {
+      "path": "packages/coding-agent/src/config.ts",
+      "symbol": "ENV_AGENT_DIR",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/config.ts",
+      "symbol": "getAgentDir",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/main.ts",
+      "symbol": "main session directory selection",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "symbol": "parseArgs session-dir option",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "symbol": "printHelp environment variables",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "symbol": "SettingsManager.getSessionDir",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/session-manager.ts",
+      "symbol": "getDefaultSessionDir",
+      "relevance": "supporting"
+    }
+  ],
+  "relevant_spans": [
+    {
+      "path": "packages/coding-agent/src/config.ts",
+      "start_line": 321,
+      "end_line": 329,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/config.ts",
+      "start_line": 343,
+      "end_line": 353,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/main.ts",
+      "start_line": 486,
+      "end_line": 497,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "start_line": 96,
+      "end_line": 102,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "start_line": 322,
+      "end_line": 329,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/settings-manager.ts",
+      "start_line": 576,
+      "end_line": 588,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/session-manager.ts",
+      "start_line": 428,
+      "end_line": 435,
+      "relevance": "supporting"
+    }
+  ],
+  "existing_tests": [
+    "packages/coding-agent/test/args.test.ts",
+    "packages/coding-agent/test/settings-manager.test.ts",
+    "packages/coding-agent/test/session-manager/file-operations.test.ts"
+  ],
+  "target_added_tests": [],
+  "tests_modified_by_target": [],
+  "target_added_files_not_retrievable": [],
+  "test_availability": {
+    "execution_status": "not_executed",
+    "pre_existing": [
+      {
+        "path": "packages/coding-agent/test/args.test.ts",
+        "content_sha256": "c0246e5b2a638fa30964837838f70b3d79741f3a3463071133ab3c3b3cc57410",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/args.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      },
+      {
+        "path": "packages/coding-agent/test/settings-manager.test.ts",
+        "content_sha256": "e10790619070756dae48f97326e3b0d618032f08d7eab1c89f2ea61cf95a4c05",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/settings-manager.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      },
+      {
+        "path": "packages/coding-agent/test/session-manager/file-operations.test.ts",
+        "content_sha256": "417e1a574a6b6bcf38e73fc4d01bba3b53d218d5498a03ae06282ae167a7460d",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/session-manager/file-operations.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      }
+    ],
+    "target_modified_test_files_note": "Only parent contents are retrieval eligible; later-added test cases are future evidence."
+  },
+  "annotation_notes": [
+    "No test file is changed by the target. Existing suites are related coverage, not proof of direct coverage for the new environment feature.",
+    "AI-assisted T2 proposal. Structural checks are separate from pending human relevance review.",
+    "This annotation is tied to the T2 task prompt; do not silently mix it into pilot-v1.0 scoring.",
+    "T1 review (t1_reviewed_v1): all T2 judgments confirmed; no changes."
+  ],
+  "unjudged_policy": "Unlisted files are unjudged; disclose any closed-world scoring convention and review additional useful evidence without method identity before freezing.",
+  "review_detail": "Reviewed by T1 only (single reviewer); no peer/second reviewer. Not fully blind (T3 preliminary aggregates seen; no traces consulted)."
+}

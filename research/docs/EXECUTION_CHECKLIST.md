@@ -103,7 +103,7 @@ Future stages are **not** complete. Do not mark them done until their completion
 | **Expected artifacts** | Integrated components; tests under `tests/`; integration notes; provenance log; 12 individual method-run records organized into 6 matched A/B pairs under `results/raw/`; pilot validation report. |
 | **Completion criteria** | Both methods execute against the same snapshots and retrieval infrastructure; integration tests pass; all planned pilot repetitions are complete or gaps documented; seeds, configuration hashes, model identifiers and `implementation_origin` recorded; pilot results reviewed. |
 | **Ownership** | T1: retrieval validation. T2: benchmark and ground-truth validation. T3: integration, pilot execution and validation. |
-| **Status** | Not started |
+| **Status** | **Complete** (2026-11-24, T3): 12/12 runs, 6/6 pairs; see `handoff_t3_pilot.md`. *(Was "Not started"; updated by T1 2026-11-26.)* |
 
 ---
 
@@ -116,7 +116,7 @@ Future stages are **not** complete. Do not mark them done until their completion
 | **Expected artifacts** | Main experiment records; processed evaluation tables; paired comparisons; resource-consumption analysis; Method B trace-analysis scripts; charts under `results/charts/`; `results/findings.md`; `docs/limitations.md`; final academic report, references, presentation and appendices A–D. |
 | **Completion criteria** | Main experiment completed or gaps documented; primary and applicable secondary metrics calculated from actual experimental records; paired comparisons reproducible; findings supported by recorded evidence; limitations documented; final academic report and presentation completed. |
 | **Ownership** | T3: comparative evaluation, agent-search analysis and research synthesis. T1: retrieval diagnostics. T2: benchmark expansion and ground-truth validation. |
-| **Status** | Not started |
+| **Status** | **Partial** (2026-11-26). Main experiment executed (24/24, T3, 2026-11-25). T1 GT review, evaluator, trace-analysis scripts, report draft, presentation outline and demo guide done. Authoritative scores and trace analysis blocked on raw-trace transfer; slides, video and submission pending (group). See `docs/handoff_t1_final.md`. |
 
 ---
 
@@ -131,5 +131,5 @@ Future stages are **not** complete. Do not mark them done until their completion
 | 4 | Freeze experimental protocol | Yes | **Complete** (`pilot-v1.0`) |
 | 5 | Corpus + local semantic indexing | Yes | **Complete** (live indexes verified) |
 | 6 | Methods A/B + experiment infrastructure | Yes | **Complete** |
-| 7 | Integration, validation and pilot experiments | No | **Next** |
-| 8 | Main experiment, comparative analysis and reporting | No | Pending |
+| 7 | Integration, validation and pilot experiments | No | **Complete** (12/12 runs) |
+| 8 | Main experiment, comparative analysis and reporting | No | **Partial**: runs done; T1 evaluation blocked on traces; reporting drafted |

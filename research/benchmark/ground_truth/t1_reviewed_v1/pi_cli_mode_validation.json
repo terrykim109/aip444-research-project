@@ -1,0 +1,165 @@
+{
+  "task_id": "pi_cli_mode_validation",
+  "snapshot_sha": "1a584a7a56eb5e7b4ff8ccbd46430f1533282eed",
+  "annotation_version": "t1-1.0",
+  "annotation_set": "t1_reviewed_v1",
+  "implementation_origin": "teammate_2",
+  "review_status": "validated",
+  "human_review_status": "reviewed",
+  "required_files": [
+    "packages/coding-agent/src/cli/args.ts"
+  ],
+  "files": [
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Defines valid modes, the diagnostics result and the existing mode-argument parsing branch.",
+      "symbols": [
+        "Mode and Args",
+        "parseArgs mode branch"
+      ],
+      "line_spans": [
+        {
+          "symbol": "Mode and Args",
+          "start_line": 11,
+          "end_line": 39,
+          "anchor": "export type Mode",
+          "content_sha256": "10ce821b8dae6aa4c8fcb59104a8098618a186f3ca3239601cdc64f88fa38f5f"
+        },
+        {
+          "symbol": "parseArgs mode branch",
+          "start_line": 71,
+          "end_line": 103,
+          "anchor": "export function parseArgs",
+          "content_sha256": "9324379924346277a5706f703c2f3fd3e6d69a67fd1c8ffa366bfa6c0836f955"
+        }
+      ],
+      "blob_sha": "284888d1345d1b15c75d8fa7165cc9cf94704339",
+      "content_sha256": "de0b21efa0cca60cd012547b3f187f2cabb6c8e8eb62c4f0e01153351b6be973"
+    },
+    {
+      "path": "packages/coding-agent/test/args.test.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Pre-existing tests verify successful json/rpc parsing, providing a compatibility baseline.",
+      "symbols": [
+        "parseArgs existing mode tests"
+      ],
+      "line_spans": [
+        {
+          "symbol": "parseArgs existing mode tests",
+          "start_line": 118,
+          "end_line": 126,
+          "anchor": "test(\"parses --mode\"",
+          "content_sha256": "685ac80ebed471ceae5a6a24aaebb48954720de4083cac51b2f7d87fbbf3fd34"
+        }
+      ],
+      "blob_sha": "710ed7b09d00428a0a1ca7eaebaf5cfca077b2de",
+      "content_sha256": "55660408eaa82498adfcf5b91df15658796919797dba9472922e5805ede575b0"
+    },
+    {
+      "path": "packages/coding-agent/src/main.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Unchanged CLI startup already prints parser diagnostics and exits on error, so the parser can use the existing propagation mechanism.",
+      "symbols": [
+        "main parser diagnostics handling"
+      ],
+      "line_spans": [
+        {
+          "symbol": "main parser diagnostics handling",
+          "start_line": 607,
+          "end_line": 615,
+          "anchor": "const parsed = parseArgs(args)",
+          "content_sha256": "cdbcc2cd06f0e82838607026a981f13fadc03957a80187beea81ed9437f62415"
+        }
+      ],
+      "blob_sha": "195a1127e457994566cb8f4e77949e2586dd226d",
+      "content_sha256": "d5f38460ed5ff89a8822a56bb40d279c08fe00b4d1d501e83cce0faf0b99addd"
+    }
+  ],
+  "relevant_symbols": [
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "symbol": "Mode and Args",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "symbol": "parseArgs mode branch",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/test/args.test.ts",
+      "symbol": "parseArgs existing mode tests",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/main.ts",
+      "symbol": "main parser diagnostics handling",
+      "relevance": "supporting"
+    }
+  ],
+  "relevant_spans": [
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "start_line": 11,
+      "end_line": 39,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/cli/args.ts",
+      "start_line": 71,
+      "end_line": 103,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/test/args.test.ts",
+      "start_line": 118,
+      "end_line": 126,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/main.ts",
+      "start_line": 607,
+      "end_line": 615,
+      "relevance": "supporting"
+    }
+  ],
+  "existing_tests": [
+    "packages/coding-agent/test/args.test.ts"
+  ],
+  "target_added_tests": [],
+  "tests_modified_by_target": [
+    "packages/coding-agent/test/args.test.ts"
+  ],
+  "target_added_files_not_retrievable": [],
+  "test_availability": {
+    "execution_status": "not_executed",
+    "pre_existing": [
+      {
+        "path": "packages/coding-agent/test/args.test.ts",
+        "content_sha256": "55660408eaa82498adfcf5b91df15658796919797dba9472922e5805ede575b0",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/args.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      }
+    ],
+    "target_modified_test_files_note": "Only parent contents are retrieval eligible; later-added test cases are future evidence."
+  },
+  "annotation_notes": [
+    "One essential file is deliberate. New validation cases are added inside an existing test file; only the original tests are available in the parent.",
+    "AI-assisted T2 proposal. Structural checks are separate from pending human relevance review.",
+    "This annotation is tied to the T2 task prompt; do not silently mix it into pilot-v1.0 scoring.",
+    "T1 review (t1_reviewed_v1): all T2 judgments confirmed; no changes."
+  ],
+  "unjudged_policy": "Unlisted files are unjudged; disclose any closed-world scoring convention and review additional useful evidence without method identity before freezing.",
+  "review_detail": "Reviewed by T1 only (single reviewer); no peer/second reviewer. Not fully blind (T3 preliminary aggregates seen; no traces consulted)."
+}
