@@ -2,8 +2,8 @@
 title: "Agent-Directed Code Search Versus One-Shot Code RAG for Repository-Level Evidence Retrieval: A Controlled Study on the Pi Monorepo"
 authors: "Arman Ataeipour, Nirajan Bhandari, Rehat Preet Kaur, Terry (Hyun Joon) Kim"
 course: "AIP444 — Research Project"
-date: "[TO BE COMPLETED — submission date]"
-status: "DRAFT for group review. Prepared by T1 (Rehat Preet Kaur) with AI assistance; see Appendix A. Results rescored by T1 from T3 per-run evaluation files (raw traces not transferred)."
+date: "November 27, 2026"
+status: "DRAFT for group review. Prepared by T1 (Rehat Preet Kaur) with AI assistance; see Appendix A. Results rescored by T1 from T3 per-run evaluation files; raw traces since shared and verified (36/36 SHA-256 match, scripts/t1_verify_traces.py) and all figures reproduced by direct trace scoring."
 ---
 
 # Agent-Directed Code Search Versus One-Shot Code RAG for Repository-Level Evidence Retrieval
@@ -116,7 +116,7 @@ Integrity statement: experimental results come from the recorded runs. No AI-gen
 
 Each member writes and approves their own 200–300-word reflection. Nothing below has been written on anyone's behalf.
 
-- **Arman Ataeipour** — [TO BE COMPLETED by Arman]
+- **Arman Ataeipour** — I was responsible for T3: integrating the team's components, validating the benchmark and retrieval system, and executing both experiments. I worked almost entirely through Claude Code, directing it to re-verify all eight benchmark tasks against a fresh clone, rebuild the index to confirm reproducibility, and run the pilot (12 runs) and main experiment (24 runs, zero failures) under a frozen configuration. I also delivered the retrieval validation in PR #2 and, before submission, re-verified every reported number by running T1's evaluator directly against the SHA-256-verified raw traces. What worked well was treating the AI as an executor while I set the constraints: separate small commits, no unverified claims, and every result traced to an artifact. What worked less well was early on, when I accepted summaries without checking them — I learned to demand that each claim point to a file or log, which caught a real issue (task E's commits needed a special git fetch). My understanding evolved from assuming the agentic method would clearly win to appreciating why it didn't: it ranks relevant files earlier and is more precise when it stops early, but its extra searches add false positives on ambiguous tasks, and it costs roughly 40× the latency. The mixed result taught me that an honest, reproducible finding of "no reliable advantage" is a legitimate research outcome.
 - **Nirajan Bhandari** — [TO BE COMPLETED by Nirajan]
 - **Rehat Preet Kaur** — [TO BE COMPLETED by Rehat]
 - **Terry (Hyun Joon) Kim** — [TO BE COMPLETED by Terry]
