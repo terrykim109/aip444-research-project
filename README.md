@@ -1,9 +1,9 @@
 # Repository-Level Context for Coding Agents
 
-**Status (2026-11-25):** Stages 1–7 complete and the **main experiment executed** — pilot `pilot-v1.0` (12/12 runs) and `main-v1.0` (24/24 runs, 4 tasks) both completed live with zero failures; preliminary file-level results computed.  
-**Next:** T1 (Rehat) — ground-truth relevance review, authoritative evaluation, research synthesis/draft.  
-**Where to look:** `research/docs/handoff_t3_integration.md` (umbrella), `handoff_t3_pilot.md`, `handoff_t3_main_experiment.md`, `research/results/run_manifest.json` (all 36 runs + trace hashes), `research/config/main_experiment.yaml` (frozen main config).  
-**Requirements to reproduce:** OpenRouter API key in `research/.env`, a local Pi clone, and machine-local worktrees (`prepare_worktrees.py --write-paths`). Raw traces are gitignored — T1 receives them out-of-band, verified against the manifest hashes.
+**Status (2026-11-26, T1):** Both experiments are executed. Pilot `pilot-v1.0` completed 12/12 runs and main `main-v1.0` completed 24/24 runs (4 tasks), with zero failures and a single config hash. T1 has finished the ground-truth review (`t1_reviewed_v1`), the independent evaluator and trace-analysis scripts, the report draft, the presentation outline, the demo guide and the submission checklist. Results were rescored by T1 from T3's per-run evaluation files, cross-checked against the manifest, against the reviewed ground truth (`research/results/findings.md`). Raw traces were not transferred, so MRR/nDCG and per-call analysis are unavailable.  
+**Start here:** `research/docs/handoff_t1_final.md` · report draft `research/report.md` · findings `research/results/findings.md` · evaluation procedure `research/docs/t1_evaluation.md` · GT review `research/docs/t1_ground_truth_review.md` · slides `research/docs/presentation_outline.md` · demo `research/docs/demo.md` · checklist `research/docs/final_submission_checklist.md`.  
+**Earlier handoffs (historical):** `research/docs/handoff_t3_integration.md`, `handoff_t3_pilot.md`, `handoff_t3_main_experiment.md`; `research/results/run_manifest.json` (36 runs + trace hashes); `research/config/main_experiment.yaml`.  
+**Requirements to reproduce runs:** an OpenRouter API key in `research/.env`, a local Pi clone, and machine-local worktrees (`prepare_worktrees.py --write-paths`). Raw traces are gitignored and must be transferred out-of-band, then verified with `research/scripts/t1_verify_traces.py`.
 
 ---
 
@@ -61,7 +61,8 @@ In this project we emphasise the **retrieval** side: building a ranked **evidenc
 | **Role** | Tasks, snapshots, prompts, ground truth | Running Method A vs Method B and scoring packs |
 | **Independent owner** | EXP (preliminary self-validated prompts/GT; Git-verified snapshots) | EXP (retriever, methods, logging, core evaluation) |
 | **Optional enhancement** | T2 review / gold upgrade | T1 retriever upgrade; T3 extra metrics/viz |
-| **Current** | Pilots A/B prompts + preliminary GT; E unresolved; other GT deferred | Shared semantic retriever ready; Method A/B runners not built |
+| **Current (2026-11-26)** | 8/8 snapshots verified (E resolved); pilot GT `preliminary`; main GT `t2_context_v1` (as run) + T1-reviewed `t1_reviewed_v1` | Methods A/B built and executed: 36 runs (pilot + main); T1 evaluator ready, scores pending trace transfer |
+| *Historical (Stage 5)* | *Pilots A/B prompts + preliminary GT; E unresolved; other GT deferred* | *Shared semantic retriever ready; Method A/B runners not built* |
 
 The benchmark defines *what* is asked and *what counts as relevant*. The experiment measures *which search strategy* gathers better evidence under shared controls.
 
@@ -86,8 +87,8 @@ Method B is inspired by iterative retrieval (e.g. RepoCoder) but is **not** an e
 
 [Pi](https://github.com/earendil-works/pi) is a real, evolving monorepo with cross-cutting concerns (extensions, packages, RPC, CLI, networking). That makes repository-level retrieval nontrivial and closer to agent workloads than toy single-file tasks. We use **task-specific pre-change snapshots** so methods search the tree as it existed before the target change.
 
-**Pi clone (outside this research folder):** `C:\Users\froze\Desktop\pi-upstream`  
-**Pilot worktrees (detached pre-change parents):**
+**Pi clone (outside this research folder):** machine-local. The paths below are the original EXP machine's, kept for history. Each runner creates its own with `prepare_worktrees.py --write-paths`.  
+**Pilot worktrees (detached pre-change parents, original machine):**
 
 | Task | Worktree | HEAD |
 |---|---|---|
@@ -185,7 +186,7 @@ EXP corpus + local semantic index  (identical for A and B)
              optional T3 extras / presentation
 ```
 
-Hard rules: same retriever/index for both methods; no hidden gold; BM25 ≠ semantic RAG; dry-run ≠ LLM experiment. Stage 5 implements the shared retriever; Method A/B orchestration starts at Stage 6.
+Hard rules: same retriever/index for both methods; no hidden gold; BM25 ≠ semantic RAG; dry-run ≠ LLM experiment. Stage 5 implemented the shared retriever and Stage 6 the Method A/B orchestration. Both were exercised live in the pilot and main runs (2026-11-24/25).
 
 ---
 
@@ -252,8 +253,15 @@ python scripts/build_corpus_indexes.py --task-id pi_cli_mode_validation  # etc.
 python scripts/run_method_a.py --task-id <task> --repetition <rep> --protocol-version main-v1.0
 python scripts/run_method_b.py --task-id <task> --repetition <rep> --protocol-version main-v1.0
 
-# Preliminary file-level evaluation (T1's independent evaluation is authoritative)
+# Preliminary file-level evaluation (T3)
 python scripts/evaluate_pilot.py --annotation-set t2_context_v1 --task-id <task> ...
+
+# T1 independent evaluation (authoritative once traces are present and verified)
+python scripts/t1_verify_traces.py
+python scripts/t1_evaluate.py --run-set main-v1.0 --annotation-set t1_reviewed_v1
+python scripts/t1_evaluate.py --run-set pilot-v1.0 --annotation-set preliminary
+python scripts/t1_analyze_method_b.py --run-set main-v1.0 --annotation-set t1_reviewed_v1
+python scripts/t1_demo_replay.py --task-id pi_cli_mode_validation --repetition 1
 ```
 
 Artifacts: traces `results/raw/traces/` (gitignored), manifest + hashes `results/run_manifest.json` (committed), evaluation outputs `results/processed/` (gitignored).
@@ -286,7 +294,7 @@ Also track cumulative unique evidence exposure and newly discovered relevant fil
 
 ## 19. Research limitations
 
-Summary (updated 2026-11-25): all ground truth remains **provisional pending T1 relevance review** (results may shift after review); 4-task main set limits generalization and no statistical significance is claimed; C and E excluded from the main set for overlap (decisions recorded in `config/main_experiment.yaml`, open to revisit); G/H essential-file containment caveat; Candidate E needs fetch-by-SHA on fresh clones; raw traces are local-only until transferred to T1; retrieval quality ≠ implementation success. Full list: `docs/limitations.md`.
+Summary (updated 2026-11-26): main ground truth reviewed by T1 (single, non-blind reviewer) → `t1_reviewed_v1` (1 added supporting file in F; `t2_context_v1` preserved as run); raw traces not yet transferred, so all scores are preliminary; pilot and main use different prompt/annotation versions and are not combined; 4-task main set limits generalization and no statistical significance is claimed; C and E excluded from the main set for overlap (decisions recorded in `config/main_experiment.yaml`, open to revisit); G/H essential-file containment caveat; Candidate E needs fetch-by-SHA on fresh clones; raw traces are local-only until transferred to T1; retrieval quality ≠ implementation success. Full list: `docs/limitations.md`.
 
 ---
 
@@ -300,12 +308,15 @@ Summary (updated 2026-11-25): all ground truth remains **provisional pending T1 
 | Snapshot verification | **8/8 verified** (E resolved by T2; fetch-by-SHA caveat) |
 | Protocol freeze | `pilot-v1.0` frozen; `main-v1.0` frozen (`config/main_experiment.yaml`) — pilot pins inherited unchanged |
 | Integration schemas & contracts | **Documented** (`schemas/`, handoff) |
-| Ground-truth annotations | All 8 structurally validated (`t2_context_v1`); **provisional pending T1 relevance review** |
+| Ground-truth annotations | All 8 structurally validated (`t2_context_v1`); main 4 **reviewed by T1** → `t1_reviewed_v1` (2026-11-26) |
 | Semantic retriever / index | **Verified live** — 6 snapshot indexes built (2 pilot + 4 main) |
 | Method A / Method B / chat adapter / runner | **Implemented (Stage 6)** and exercised live |
 | Pilot (Stage 7) | **Executed 2026-11-24** — 12/12 runs, 6/6 pairs, zero failures |
 | Main experiment (`main-v1.0`) | **Executed 2026-11-25** — 24/24 runs, 12/12 pairs, zero failures; preliminary mixed result (B wins 2 tasks, A wins 1, 1 tie) |
-| Findings / synthesis / report | **T1 (pending)** — `results/findings.md` not yet written; T3 preliminary numbers only |
+| Raw trace transfer to T1 | **Not transferred.** T3's per-run evaluation files were received instead, and T1 rescored all 36 runs from them (no MRR/nDCG, no per-call analysis) |
+| Evaluation tooling (T1) | **Done**: verifier, evaluator, Method B analysis, demo replay, tests |
+| Findings / synthesis / report | **Draft done (T1)** with final rescored results: `research/report.md` (+ `report.docx`), `research/results/findings.md`; group editing, reflections and Appendix D pending |
+| Presentation / demo / checklist | **Outline + guide done (T1)**; slides, recording, upload, submission are group actions |
 | Teammate contributions merged | T2 benchmark (PR #1), retrieval delivery (PR #2), T3 validation + pilot (PR #3) |
 
 ---
@@ -314,26 +325,43 @@ Summary (updated 2026-11-25): all ground truth remains **provisional pending T1 
 
 | Doc | Purpose |
 |---|---|
-| [BEGINNER_GUIDE.md](docs/BEGINNER_GUIDE.md) | Concepts from scratch |
-| [EXECUTION_CHECKLIST.md](docs/EXECUTION_CHECKLIST.md) | Ten-stage roadmap (+ 1.5) |
-| [methodology.md](docs/methodology.md) | Controlled design |
-| [literature_review.md](docs/literature_review.md) | RepoBench, RepoCoder, Repoformer |
-| [snapshot_verification.md](docs/snapshot_verification.md) | Stage 2 SHA / worktree report |
-| [benchmark_validation.md](docs/benchmark_validation.md) | Stage 3 prompts / GT / isolation |
-| [protocol_freeze.md](docs/protocol_freeze.md) | Stage 4 frozen pilot protocol |
-| [corpus_and_retrieval.md](docs/corpus_and_retrieval.md) | Stage 5 corpus, embeddings, index, retriever |
-| [methods_stage6.md](docs/methods_stage6.md) | Stage 6 Method A/B, chat client, traces |
+| [BEGINNER_GUIDE.md](research/docs/BEGINNER_GUIDE.md) | Concepts from scratch |
+| [EXECUTION_CHECKLIST.md](research/docs/EXECUTION_CHECKLIST.md) | Ten-stage roadmap (+ 1.5) |
+| [methodology.md](research/docs/methodology.md) | Controlled design |
+| [literature_review.md](research/docs/literature_review.md) | RepoBench, RepoCoder, Repoformer, CodeRAG-Bench, SWE-agent (T1-verified) |
+| [report.md](research/report.md) | Research report draft (APA, Appendices A–D) |
+| [handoff_t1_final.md](research/docs/handoff_t1_final.md) | T1 final handoff |
+| [t1_ground_truth_review.md](research/docs/t1_ground_truth_review.md) | GT review, `t1_reviewed_v1` |
+| [t1_evaluation.md](research/docs/t1_evaluation.md) | Evaluation procedure, artifact status, T3 evaluator audit |
+| [presentation_outline.md](research/docs/presentation_outline.md) | 10-slide outline |
+| [demo.md](research/docs/demo.md) | 1–2 min demo guide |
+| [final_submission_checklist.md](research/docs/final_submission_checklist.md) | Requirement → status map |
+| [findings.md](research/results/findings.md) | Final results summary (rescored, reviewed GT) |
+| [run_manifest.json](research/results/run_manifest.json) | All 36 runs with statuses and trace hashes |
+| [main_experiment.yaml](research/config/main_experiment.yaml) | Frozen main-v1.0 configuration |
+| [handoff_final.md](handoff_final.md) | EXP onboarding / coordination handoff |
+| [retrieval_backend_notes.md](research/docs/retrieval_backend_notes.md) | Retrieval backend notes (PR #2) |
+| [t2_integration.md](research/docs/t2_integration.md) | T2 integration and handoff |
+| [t2_benchmark_review.md](research/docs/t2_benchmark_review.md) | T2 benchmark review |
+| [t2_snapshot_review.md](research/docs/t2_snapshot_review.md) | T2 snapshot review |
+| [t2_task_cards.md](research/docs/t2_task_cards.md) | T2 task cards (8 tasks) |
+| [t2_validation_results.md](research/docs/t2_validation_results.md) | T2 validation results |
+| [snapshot_verification.md](research/docs/snapshot_verification.md) | Stage 2 SHA / worktree report |
+| [benchmark_validation.md](research/docs/benchmark_validation.md) | Stage 3 prompts / GT / isolation |
+| [protocol_freeze.md](research/docs/protocol_freeze.md) | Stage 4 frozen pilot protocol |
+| [corpus_and_retrieval.md](research/docs/corpus_and_retrieval.md) | Stage 5 corpus, embeddings, index, retriever |
+| [methods_stage6.md](research/docs/methods_stage6.md) | Stage 6 Method A/B, chat client, traces |
 | [handoff_t3_integration.md](research/docs/handoff_t3_integration.md) | T3 umbrella handoff to T1 |
 | [handoff_t3_pilot.md](research/docs/handoff_t3_pilot.md) | Validation + executed pilot record |
 | [handoff_t3_main_experiment.md](research/docs/handoff_t3_main_experiment.md) | Frozen main-v1.0 + executed main run record |
-| [pi_repository_notes.md](docs/pi_repository_notes.md) | Pinned AGENTS.md / toolchain notes |
-| [task_cards.md](docs/task_cards.md) | Human-readable tasks |
-| [limitations.md](docs/limitations.md) | Threats to validity |
-| [report_plan.md](docs/report_plan.md) | ~1,500-word APA plan |
-| [ai_use_log.md](docs/ai_use_log.md) | AI interaction log |
-| [contribution_log.md](docs/contribution_log.md) | Contribution tracker |
-| [appendix_templates.md](docs/appendix_templates.md) | Appendices A–D |
-| [schemas/README.md](schemas/README.md) | JSON Schema contracts |
+| [pi_repository_notes.md](research/docs/pi_repository_notes.md) | Pinned AGENTS.md / toolchain notes |
+| [task_cards.md](research/docs/task_cards.md) | Human-readable tasks |
+| [limitations.md](research/docs/limitations.md) | Threats to validity |
+| [report_plan.md](research/docs/report_plan.md) | ~1,500-word APA plan |
+| [ai_use_log.md](research/docs/ai_use_log.md) | AI interaction log |
+| [contribution_log.md](research/docs/contribution_log.md) | Contribution tracker |
+| [appendix_templates.md](research/docs/appendix_templates.md) | Appendices A–D |
+| [schemas/README.md](research/schemas/README.md) | JSON Schema contracts |
 
 ---
 
@@ -342,3 +370,5 @@ Summary (updated 2026-11-25): all ground truth remains **provisional pending T1 
 - RepoBench (2024): https://proceedings.iclr.cc/paper_files/paper/2024/file/d191ba4c8923ed8fd8935b7c98658b5f-Paper-Conference.pdf  
 - RepoCoder (2023): https://aclanthology.org/2023.emnlp-main.151/  
 - Repoformer (2024): https://proceedings.mlr.press/v235/wu24a.html  
+- CodeRAG-Bench (2025): https://doi.org/10.18653/v1/2025.findings-naacl.176  
+- SWE-agent (2024): https://doi.org/10.52202/079017-1601  
