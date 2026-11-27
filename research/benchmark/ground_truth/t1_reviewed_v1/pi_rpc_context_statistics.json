@@ -1,0 +1,231 @@
+{
+  "task_id": "pi_rpc_context_statistics",
+  "snapshot_sha": "9a0be024a6ff381362e04b19dd1c155c44675f4a",
+  "annotation_version": "t1-1.0",
+  "annotation_set": "t1_reviewed_v1",
+  "implementation_origin": "teammate_2",
+  "review_status": "validated",
+  "human_review_status": "reviewed",
+  "required_files": [
+    "packages/coding-agent/src/core/agent-session.ts"
+  ],
+  "files": [
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "relevance": "essential",
+      "relevance_score": 2,
+      "rationale": "Owns both the SessionStats return contract and an existing compaction-aware current-context calculation.",
+      "symbols": [
+        "SessionStats",
+        "AgentSession.getSessionStats",
+        "AgentSession.getContextUsage"
+      ],
+      "line_spans": [
+        {
+          "symbol": "SessionStats",
+          "start_line": 186,
+          "end_line": 203,
+          "anchor": "export interface SessionStats",
+          "content_sha256": "64991098d754ae5f7a6c8ebe43bb41ed6bdc32e465fbacf96e3e4146402ce78b"
+        },
+        {
+          "symbol": "AgentSession.getSessionStats",
+          "start_line": 2988,
+          "end_line": 3033,
+          "anchor": "getSessionStats()",
+          "content_sha256": "b8ff406c760dcaf1732000dad1dff221b7e9bb810e534e87c86c5f3774d09c2c"
+        },
+        {
+          "symbol": "AgentSession.getContextUsage",
+          "start_line": 3035,
+          "end_line": 3079,
+          "anchor": "getContextUsage()",
+          "content_sha256": "b4d0ff7d890c9ef962b1709869debb564df23bc1e9f28fddf9ebbc9e4a8a65c1"
+        }
+      ],
+      "blob_sha": "31534b25e4d338b3e97652b362ae412f48671632",
+      "content_sha256": "b42bb063f411835fed213dd829fb9464f40bc5ba6985767feb662548ca8bf485"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/rpc/rpc-mode.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Unchanged RPC handler forwards session statistics directly, demonstrating how a shared stats change reaches the RPC response.",
+      "symbols": [
+        "runRpcMode get_session_stats command"
+      ],
+      "line_spans": [
+        {
+          "symbol": "runRpcMode get_session_stats command",
+          "start_line": 490,
+          "end_line": 496,
+          "anchor": "case \"get_session_stats\"",
+          "content_sha256": "ac4a0f91363682ab41734a474f599895a3c952359275fe327c7e8fa6d0c08f67"
+        }
+      ],
+      "blob_sha": "2529689c782ece2af5c1f8f8202f1b235c899690",
+      "content_sha256": "3e7c2374eefd3e2d74720ea5b32f78040ac3252e1c21fd5f609353e50d27d222"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/rpc/rpc-types.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Unchanged RPC response union refers to SessionStats rather than duplicating its fields.",
+      "symbols": [
+        "RpcResponse session statistics variant"
+      ],
+      "line_spans": [
+        {
+          "symbol": "RpcResponse session statistics variant",
+          "start_line": 168,
+          "end_line": 173,
+          "anchor": "command: \"get_session_stats\"",
+          "content_sha256": "b462454a2a11050501e3777eea5e35359f06373af094e90c8f2dc1c9f9d66f77"
+        }
+      ],
+      "blob_sha": "5612f370de746276a16ff04cce55a73b7e9f107a",
+      "content_sha256": "8cac556b6d9ebae098367eaa3d5bebed4b47703d825fe0902956167b484d73ca"
+    },
+    {
+      "path": "packages/coding-agent/src/core/extensions/types.ts",
+      "relevance": "supporting",
+      "relevance_score": 1,
+      "rationale": "Defines the existing ContextUsage interface (tokens: number | null, contextWindow, percent: number | null). This is the 'existing representation for unknown usage' the prompt requires to be preserved, and the shape that SessionStats must expose; agent-session.ts only imports it.",
+      "symbols": [
+        "ContextUsage"
+      ],
+      "line_spans": [
+        {
+          "symbol": "ContextUsage",
+          "start_line": 245,
+          "end_line": 251,
+          "anchor": "export interface ContextUsage",
+          "content_sha256": "7ea783c267274da8a6bb950e505422d8d43c68c595630d23c13ccd42dc15e209"
+        }
+      ],
+      "blob_sha": "d4a34f1a96d608d7819b1258bec07275341db400",
+      "content_sha256": "12ab5bd74a7c91b55a321402a43d859ed240f27fd653434fef361ae97cbf0bd5"
+    }
+  ],
+  "relevant_symbols": [
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "symbol": "SessionStats",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "symbol": "AgentSession.getSessionStats",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "symbol": "AgentSession.getContextUsage",
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/rpc/rpc-mode.ts",
+      "symbol": "runRpcMode get_session_stats command",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/rpc/rpc-types.ts",
+      "symbol": "RpcResponse session statistics variant",
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/extensions/types.ts",
+      "symbol": "ContextUsage",
+      "relevance": "supporting"
+    }
+  ],
+  "relevant_spans": [
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "start_line": 186,
+      "end_line": 203,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "start_line": 2988,
+      "end_line": 3033,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/core/agent-session.ts",
+      "start_line": 3035,
+      "end_line": 3079,
+      "relevance": "essential"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/rpc/rpc-mode.ts",
+      "start_line": 490,
+      "end_line": 496,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/modes/rpc/rpc-types.ts",
+      "start_line": 168,
+      "end_line": 173,
+      "relevance": "supporting"
+    },
+    {
+      "path": "packages/coding-agent/src/core/extensions/types.ts",
+      "start_line": 245,
+      "end_line": 251,
+      "relevance": "supporting"
+    }
+  ],
+  "existing_tests": [
+    "packages/coding-agent/test/rpc-jsonl.test.ts",
+    "packages/coding-agent/test/session-manager/build-context.test.ts"
+  ],
+  "target_added_tests": [
+    "packages/coding-agent/test/agent-session-stats.test.ts"
+  ],
+  "tests_modified_by_target": [],
+  "target_added_files_not_retrievable": [
+    "packages/coding-agent/test/agent-session-stats.test.ts"
+  ],
+  "test_availability": {
+    "execution_status": "not_executed",
+    "pre_existing": [
+      {
+        "path": "packages/coding-agent/test/rpc-jsonl.test.ts",
+        "content_sha256": "8271b27fbb0f5a2678b89c67cb4935fe7d7589f92fe926b2d0464b7c7fdcf369",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/rpc-jsonl.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      },
+      {
+        "path": "packages/coding-agent/test/session-manager/build-context.test.ts",
+        "content_sha256": "0b41012e34c989ae50213f15ee1b2088189abff2610d1d7ba23beb9a830d6597",
+        "cwd": "packages/coding-agent",
+        "command": [
+          "node",
+          "../../node_modules/vitest/dist/cli.js",
+          "--run",
+          "test/session-manager/build-context.test.ts"
+        ],
+        "execution_status": "not_executed",
+        "coverage": "related existing test; new task behaviour is not assumed covered"
+      }
+    ],
+    "target_modified_test_files_note": "Only parent contents are retrieval eligible; later-added test cases are future evidence."
+  },
+  "annotation_notes": [
+    "RPC transport and types are supporting even though the target does not edit them. The new agent-session-stats test file is not parent evidence. Shares a large source file with pi-005 but uses different symbols.",
+    "AI-assisted T2 proposal. Structural checks are separate from pending human relevance review.",
+    "This annotation is tied to the T2 task prompt; do not silently mix it into pilot-v1.0 scoring.",
+    "T1 review (t1_reviewed_v1): changes recorded in benchmark/reviews/t1_reviewed_v1/changes.json."
+  ],
+  "unjudged_policy": "Unlisted files are unjudged; disclose any closed-world scoring convention and review additional useful evidence without method identity before freezing.",
+  "review_detail": "Reviewed by T1 only (single reviewer); no peer/second reviewer. Not fully blind (T3 preliminary aggregates seen; no traces consulted)."
+}

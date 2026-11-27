@@ -1,0 +1,22 @@
+# Presentation Outline — 10 slides (1 title + 9 content), target ≈ 6:00 (allowed 5–7 min)
+
+Draft prepared by T1 (Rehat Preet Kaur) with AI assistance (disclosed in Appendix A of `research/report.md`). This is an outline for the group and a later slide-generation step, not a finished deck. Presenters are **TBD**; the group assigns them. Numbers come from T1's rescore of T3's per-run files against the reviewed GT (`results/findings.md`, `results/processed/t1_rescore__main-v1.0.json`).
+
+| # | Title | Main point | Content bullets | Visual / source artifact | Time | Presenter |
+|---|---|---|---|---|---|---|
+| 1 | Agent-Directed Search vs One-Shot RAG for Repository Context | Who we are and what we tested | Title, 4 members, course, date | Title slide; Pi logo is **not** used (no third-party branding) | 0:15 | TBD |
+| 2 | The problem: agents need the right files first | Repository context is cross-file, and missing or noisy evidence hurts | Real changes span CLI, config, core and tests; one search may miss links; iterating costs time and tokens | Diagram of a monorepo with a change touching 3 files (draw new) | 0:35 | TBD |
+| 3 | Research question & methods | One controlled comparison | RQ verbatim; **Method A**: one semantic search → pack; **Method B**: LLM iterates `semantic_search`/`read_file`/`grep`/`find_symbol` (≤5 calls) → pack; same index, prompt, 6,000-token budget | Two-lane flow diagram (A single arrow vs B loop) | 0:45 | TBD |
+| 4 | Benchmark & ground truth | Real Pi tasks at pre-change snapshots | 8 verified candidates → 2 pilot + 4 main (D, F, G, H); C/E excluded for overlap before runs; essential/supporting labels never shown to methods; T1 review → `t1_reviewed_v1` (1 change in F) | Table from `docs/t1_ground_truth_review.md` §2 | 0:40 | TBD |
+| 5 | Experiment design & metric | Matched pairs, file-level F1 | 4 tasks × 3 reps × 2 methods = 24 runs / 12 pairs (+12 pilot runs); single config hash; primary metric file F1; also essential recall, MRR, nDCG@10, cost | `results/run_manifest.json` summary; F1 formula | 0:35 | TBD |
+| 6 | Results | Task-dependent, not a uniform win | Reviewed GT: H B 0.75 vs A 0.55; F B 0.43 vs 0.40; D A 0.31 vs 0.21; G tie 0.27; pairs +4/−5/0×3, mean +0.03; pooled F1 almost equal (0.375 vs 0.367) | Bar chart per task, A vs B, from `t1_rescore__main-v1.0.json` | 0:50 | TBD |
+| 7 | Demo: same task, two strategies (part 1) | Watch A's single search vs B's tool loop | Task H prompt; A: one search → files; B: call-by-call tools, files, tokens; stop reason | **Replay** of recorded traces: `python scripts/t1_demo_replay.py --task-id pi_cli_mode_validation --repetition 1` (see `docs/demo.md`); fallback screenshots | 1:00 | TBD |
+| 8 | Demo (part 2): what each pack got right | Offline scoring of both packs | Show `[essential]/[supporting]/[not in GT]` marks and P/R/F1 lines; contrast with task D where A scored higher (preliminary) | Same replay output (scores section); `--task-id pi_package_dedup_collisions` as optional counterexample | 0:40 | TBD |
+| 9 | Cost & limitations | B costs much more; evidence is limited | B mean 4.0 s vs 0.7 s, ~3.9k planning tokens/run; key insight: B's agent-selected packs (5 runs, 2.6 files, F1 0.48) vs fallback packs when it hit limits (7 runs, 10.6 files, F1 0.36, always containing A's pack); limits: 4 tasks, 1 repo, 1 non-blind reviewer, no raw traces | Small cost table from `docs/t1_evaluation.md` §6 | 0:40 | TBD |
+| 10 | Conclusion | Use agent-directed search selectively | Preliminary answer: no reliable overall advantage; helps on some tasks at higher cost; future: more tasks/repos, second annotator, vary limits, link to patch success | Takeaway box | 0:20 | TBD |
+
+**Total ≈ 6:00.** The demo takes 1:40 (slides 7–8).
+
+## Notes for the group
+- Use only real artifacts. The raw traces were not received, so run the demo from the recorded file sets (`docs/demo.md` §5, option 2). Do **not** show invented outputs.
+- **YouTube privacy inconsistency (needs a group decision):** the course materials describe the video as both *Private* and *Unlisted*, and also ask that the link work in an incognito tab. These settings are not equivalent. A *Private* video does not play for viewers who are not signed in or not invited, so it fails an incognito test. An *Unlisted* video plays for anyone who has the link. Confirm the intended setting with the instructor before uploading. T1 has not uploaded anything.

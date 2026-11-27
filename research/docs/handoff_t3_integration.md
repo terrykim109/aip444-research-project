@@ -62,6 +62,8 @@ with an OpenRouter key (`handoff_t3_main_experiment.md` §Reproduction).
 
 ## 5. Remaining T1-owned work (not claimed complete)
 
+> **T1 status (2026-11-26):** see `docs/handoff_t1_final.md`. Items 1–3 are done or drafted. Authoritative scores are still blocked because the traces listed in §4 have not been transferred.
+
 1. Human relevance review of the frozen `t2_context_v1` annotations (incl. the
    G/H essential-containment caveat); version any changes; re-evaluate traces
    per version without combining.

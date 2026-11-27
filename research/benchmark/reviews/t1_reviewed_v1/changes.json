@@ -1,0 +1,78 @@
+{
+  "annotation_set": "t1_reviewed_v1",
+  "derived_from": "t2_context_v1",
+  "reviewer": "T1 (single reviewer; no peer review performed)",
+  "review_blindness": "Not fully blind: T3's preliminary aggregate F1 tables had been seen. Raw traces/evidence packs were unavailable during review, so no per-run method output was consulted. Relevance was judged from the task prompt and the pinned parent snapshot only.",
+  "tasks": {
+    "pi_package_dedup_collisions": {
+      "source_file": "benchmark/ground_truth/t2_context_v1/pi_package_dedup_collisions.json",
+      "source_sha256_as_used_in_runs": "efd397fc56f65d58b85c0f9bf75db1ded12890c0a81ad75fe21acbea782486dd",
+      "reviewed_file": "benchmark/ground_truth/t1_reviewed_v1/pi_package_dedup_collisions.json",
+      "reviewed_sha256": "6a1fbada1fba4ecefbc304c4ede2451d159bca9d9bd150761553611d9971b55f",
+      "changes": [],
+      "essential": [
+        "packages/coding-agent/src/core/package-manager.ts",
+        "packages/coding-agent/src/core/resource-loader.ts",
+        "packages/coding-agent/src/modes/interactive/interactive-mode.ts"
+      ],
+      "supporting": [
+        "packages/coding-agent/src/core/extensions/loader.ts",
+        "packages/coding-agent/src/core/prompt-templates.ts",
+        "packages/coding-agent/src/core/settings-manager.ts",
+        "packages/coding-agent/src/core/skills.ts"
+      ]
+    },
+    "pi_rpc_context_statistics": {
+      "source_file": "benchmark/ground_truth/t2_context_v1/pi_rpc_context_statistics.json",
+      "source_sha256_as_used_in_runs": "c0752cde3124ae769f4c45a29074988d76d67e0de9802c7fa915e16a53fdd60c",
+      "reviewed_file": "benchmark/ground_truth/t1_reviewed_v1/pi_rpc_context_statistics.json",
+      "reviewed_sha256": "fbf0a18ad3a5d0093802b2b556868ad0012ecd208c99aa524456cc2c0ea1acb4",
+      "changes": [
+        {
+          "change": "add_file",
+          "path": "packages/coding-agent/src/core/extensions/types.ts",
+          "relevance": "supporting",
+          "rationale": "Defines the existing ContextUsage interface (tokens: number | null, contextWindow, percent: number | null). This is the 'existing representation for unknown usage' the prompt requires to be preserved, and the shape that SessionStats must expose; agent-session.ts only imports it."
+        }
+      ],
+      "essential": [
+        "packages/coding-agent/src/core/agent-session.ts"
+      ],
+      "supporting": [
+        "packages/coding-agent/src/core/extensions/types.ts",
+        "packages/coding-agent/src/modes/rpc/rpc-mode.ts",
+        "packages/coding-agent/src/modes/rpc/rpc-types.ts"
+      ]
+    },
+    "pi_session_directory_config": {
+      "source_file": "benchmark/ground_truth/t2_context_v1/pi_session_directory_config.json",
+      "source_sha256_as_used_in_runs": "81f21a490e669578ff7d159fb6db3617d3daa0a522842cdaf05a98d140a7420a",
+      "reviewed_file": "benchmark/ground_truth/t1_reviewed_v1/pi_session_directory_config.json",
+      "reviewed_sha256": "848c9b8f41a229bd319e08a70c6d90fb691eb55f391c87313656f6e3a38560bd",
+      "changes": [],
+      "essential": [
+        "packages/coding-agent/src/cli/args.ts",
+        "packages/coding-agent/src/config.ts",
+        "packages/coding-agent/src/main.ts"
+      ],
+      "supporting": [
+        "packages/coding-agent/src/core/session-manager.ts",
+        "packages/coding-agent/src/core/settings-manager.ts"
+      ]
+    },
+    "pi_cli_mode_validation": {
+      "source_file": "benchmark/ground_truth/t2_context_v1/pi_cli_mode_validation.json",
+      "source_sha256_as_used_in_runs": "af7193921a16351553a1ec229615064efd92301dbde245215d6d213e6c5b1b03",
+      "reviewed_file": "benchmark/ground_truth/t1_reviewed_v1/pi_cli_mode_validation.json",
+      "reviewed_sha256": "8afe60c73627e2e227348e7b15569df7c3d11ca098e9e0ce21af5dc73c150805",
+      "changes": [],
+      "essential": [
+        "packages/coding-agent/src/cli/args.ts"
+      ],
+      "supporting": [
+        "packages/coding-agent/src/main.ts",
+        "packages/coding-agent/test/args.test.ts"
+      ]
+    }
+  }
+}

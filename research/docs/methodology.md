@@ -1,7 +1,7 @@
 # Methodology (Proposed Controlled Design)
 
-**Stage:** 6 complete → Stage 7 next  
-**Status:** Design frozen (`pilot-v1.0`); methods implemented; 12 pilot trial records not yet run  
+**Stage:** 6 complete → Stage 7 next *(historical header; as of 2026-11-26 the pilot (12 runs) and main-v1.0 (24 runs) are executed. See `docs/handoff_t1_final.md`.)*  
+**Status:** Design frozen (`pilot-v1.0`); methods implemented; 12 pilot trial records not yet run *(superseded: executed 2026-11-24)*  
 **Config:** `config/experiment.yaml` (`design_frozen: true`; `technical_configuration_status: configured_stage_5`)  
 **Protocol:** `docs/protocol_freeze.md`  
 **Corpus:** `docs/corpus_and_retrieval.md`  
